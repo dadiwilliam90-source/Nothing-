@@ -15,6 +15,7 @@ from geom import pbr, GLOSS, CLOTH
 
 ITEMS = os.path.join(R.ROOT, "assets/items")
 HX, HY, HZ = R.HEAD["center"]
+HEAD_BACK = HZ + R.HEAD["size"][2] / 2
 
 
 def load_item(key):
@@ -103,7 +104,7 @@ def recolor(mesh, color, keep_detail=True, finish=CLOTH):
 
 
 def fit_hair(key, color=None, yaw=0.0, scale=1.0, dy=0.0, dz=0.0, grip=1.34,
-             max_w=1.80, max_up=0.48):
+             max_w=1.80, max_up=0.48, back=0.14, drop=0.95):
     """Seat hair on the skull.
 
     Width is matched to the head plus a hair-thickness allowance. Short wrap-around
@@ -125,7 +126,41 @@ def fit_hair(key, color=None, yaw=0.0, scale=1.0, dy=0.0, dz=0.0, grip=1.34,
         y = R.HEAD_TOP + max_up - b[1][1]
     # Anchor the front edge to the face so hair falls backwards, never through it.
     m.apply_translation([HX - ccx, y, (R.HEAD_FRONT - 0.05) + dz - b[0][2]])
+    _clamp_back(m, back)
+    _clamp_length(m, drop)
     return recolor(m, color, finish=GLOSS)
+
+
+def _clamp_back(mesh, margin):
+    """Squash the wig's depth so it hugs the skull instead of jutting out behind.
+
+    The head is only ~1.0 deep, so a wig reaching half a head-depth past it reads
+    as a lump stuck to the back. The front stays pinned; the excess is compressed.
+    """
+    limit = HEAD_BACK + margin
+    zmax = mesh.bounds[1][2]
+    if zmax <= limit:
+        return mesh
+    anchor = R.HEAD_FRONT - 0.06
+    v = mesh.vertices
+    sel = v[:, 2] > anchor
+    v[sel, 2] = anchor + (v[sel, 2] - anchor) * ((limit - anchor) / (zmax - anchor))
+    mesh.vertices = v
+    return mesh
+
+
+def _clamp_length(mesh, drop):
+    """Cap how far hair falls below the jaw, so nothing drags to the knees."""
+    floor = R.HEAD_BOTTOM - drop
+    ymin = mesh.bounds[0][1]
+    if ymin >= floor:
+        return mesh
+    top = mesh.bounds[1][1]
+    v = mesh.vertices
+    sel = v[:, 1] < top
+    v[sel, 1] = top - (top - v[sel, 1]) * ((top - floor) / (top - ymin))
+    mesh.vertices = v
+    return mesh
 
 
 def fit_cap(key, color=None, yaw=0.0, scale=1.0, dy=0.0, dz=0.0, grip=1.16, overlap=0.26):

@@ -5,22 +5,24 @@ result reads as cloth, leather and hi-vis rather than as painted blocks.
 """
 
 # ------------------------------------------------------------------ palette
-NAVY = "#2C3E5C"; NAVY_D = "#1E2A42"; NAVY_X = "#151E30"
-CHARCOAL = "#33383F"; CHARCOAL_D = "#23272C"
-BLACK = "#1A1C21"; INK = "#111318"
-WHITE = "#F2F3F5"; OFFWHITE = "#E6E8EC"; CREAM = "#EADFC8"
-GREY = "#8B9098"; GREY_L = "#B9BEC6"; GREY_D = "#4A4F57"
-DENIM = "#3F5A7D"; DENIM_D = "#2E4359"; DENIM_L = "#6E8CAE"
-RED = "#A6323C"; RED_D = "#7E2029"; MAROON = "#5E2330"
-GREEN = "#3E6B4A"; OLIVE = "#5A5F3C"; MINT = "#7FB39B"
-TEAL = "#2F7C85"; TEAL_L = "#5FA3A8"
-ORANGE = "#C4622A"; HIVIS = "#D9731F"; AMBER = "#D8A32C"
-YELLOW = "#D9B63C"; GOLD = "#C9A23F"
-PURPLE = "#5C4A7D"; PLUM = "#6B3A5C"; LILAC = "#9B8CBF"
-PINK = "#C4798F"; BLUSH = "#D9A9AE"
-BROWN = "#6B4A32"; TAN = "#A88356"; KHAKI = "#B8A177"
-SKYBLUE = "#6E93BE"; ICE = "#C7D5E2"
-STEEL = "#4E5A6B"; SILVER = "#C0C5CC"
+# Saturated, high-contrast colours in the Roblox idiom — vivid hues against
+# near-black darks. Muted "realistic" garment tones read as washed-out here.
+NAVY = "#1E52B8"; NAVY_D = "#133A8C"; NAVY_X = "#0B2158"
+CHARCOAL = "#3B414A"; CHARCOAL_D = "#22262D"
+BLACK = "#15171C"; INK = "#0C0E12"
+WHITE = "#F8F9FB"; OFFWHITE = "#EAEDF1"; CREAM = "#F4E6BE"
+GREY = "#98A2AE"; GREY_L = "#C6CCD4"; GREY_D = "#4C545F"
+DENIM = "#2C6FD0"; DENIM_D = "#1B4B98"; DENIM_L = "#5FA0E6"
+RED = "#E32636"; RED_D = "#B4111F"; MAROON = "#8C1030"
+GREEN = "#25A04C"; OLIVE = "#6E7632"; MINT = "#4FD0A0"
+TEAL = "#079AA8"; TEAL_L = "#3FC6D2"
+ORANGE = "#FF7A18"; HIVIS = "#FF8C00"; AMBER = "#FFB302"
+YELLOW = "#FFD52E"; GOLD = "#F2B024"
+PURPLE = "#7B38C4"; PLUM = "#A32A72"; LILAC = "#B78BEE"
+PINK = "#ED3A6D"; BLUSH = "#FF9CB6"
+BROWN = "#7C4A20"; TAN = "#C68A3E"; KHAKI = "#D9BC5E"
+SKYBLUE = "#4FADDF"; ICE = "#CCE4F7"
+STEEL = "#35719E"; SILVER = "#D4DAE1"
 
 
 def S(name, sex, **kw):
