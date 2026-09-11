@@ -19,7 +19,7 @@ HEADWEAR = {
 }
 MESH_CAPS = {
     "baseball": ("cap_baseball__Object_0", {}),
-    "headband": ("hat_1__Object_6", {"overlap": 0.30}),
+    "headband": ("hat_1__Object_6", {"overlap": 0.52, "grip": 1.10}),
 }
 
 
@@ -123,6 +123,8 @@ def _extras(s):
             out += G.socks(arg)
         elif kind == "cuffs":
             out += G.cuffs(arg)
+        elif kind == "hivis":
+            out += G.hivis_bands(arg, pad=pad)
     return out
 
 
@@ -138,7 +140,12 @@ def build(spec):
     hair = spec.get("hair")
     if hair:
         col = HAIR_COLORS.get(spec.get("hair_color", "dark_brown"), spec.get("hair_color"))
-        meshes.append(fit_hair(hair, color=col, **HAIR.get(hair, {})))
+        fit = dict(HAIR.get(hair, {}))
+        if spec.get("head"):
+            fit.setdefault("grip", 1.34)
+            fit["grip"] *= 0.88          # tuck under the hat instead of lifting it
+            fit["dy"] = fit.get("dy", 0.0) - 0.07
+        meshes.append(fit_hair(hair, color=col, **fit))
 
     head = spec.get("head")
     if head:

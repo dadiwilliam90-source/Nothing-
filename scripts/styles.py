@@ -43,12 +43,13 @@ BOYS = [
     S("chef", "boy", top="uniform", top_color=WHITE, sleeve="long",
       collar_color=OFFWHITE, placket_color=OFFWHITE, button_color=GREY_L,
       bottom="trousers", bottom_color=CHARCOAL, shoe="shoe", shoe_color=BLACK,
-      extras=[("apron", OFFWHITE)], hair="hair_1__Object_7",
+      extras=[("apron", "#D3D7DD")], hair="hair_1__Object_7",
       hair_color="brown", head="chef"),
 
     S("construction_worker", "boy", top="vest_over", top_color=HIVIS, inner_color=GREY_D,
       sleeve="long", bottom="jeans", bottom_color=DENIM_D, bottom_finish="denim",
-      shoe="boot", shoe_color=BROWN, extras=[("belt", BROWN)],
+      shoe="boot", shoe_color=BROWN,
+      extras=[("hivis", "#E4D35A"), ("belt", BROWN)],
       hair="hair_2__Object_5", hair_color="dark_brown", head="hardhat"),
 
     S("school_boy", "boy", top="blazer", top_color=NAVY_D, inner_color=WHITE,
@@ -85,7 +86,8 @@ BOYS = [
 
     S("firefighter", "boy", top="jacket", top_color=CHARCOAL_D, inner_color=AMBER,
       collar_color=AMBER, open=False, bottom="trousers", bottom_color=CHARCOAL_D,
-      shoe="boot", shoe_color=INK, extras=[("belt", INK), ("badge", AMBER)],
+      shoe="boot", shoe_color=INK,
+      extras=[("hivis", "#D9C24A"), ("belt", INK), ("badge", AMBER)],
       hair="hair_2__Object_4", hair_color="dark_brown", head=("hardhat", dict(color=RED_D))),
 
     S("mechanic", "boy", top="uniform", top_color=STEEL, sleeve="long",
@@ -188,7 +190,7 @@ GIRLS = [
     S("chef_woman", "girl", top="uniform", top_color=WHITE, sleeve="long",
       collar_color=OFFWHITE, placket_color=OFFWHITE, button_color=GREY_L,
       bottom="trousers", bottom_color=CHARCOAL, shoe="shoe", shoe_color=BLACK,
-      extras=[("apron", OFFWHITE)], hair="hair_2__Object_6",
+      extras=[("apron", "#D3D7DD")], hair="hair_2__Object_6",
       hair_color="auburn", head="chef"),
 
     S("school_girl", "girl", top="blazer", top_color=NAVY_D, inner_color=WHITE,
@@ -217,7 +219,7 @@ GIRLS = [
 
     S("waitress", "girl", top="vest_over", top_color=INK, inner_color=WHITE,
       sleeve="long", bottom="skirt_short", bottom_color=INK,
-      shoe="shoe", shoe_color=BLACK, extras=[("bow", RED_D), ("apron", OFFWHITE)],
+      shoe="shoe", shoe_color=BLACK, extras=[("bow", RED_D), ("apron", "#D8DCE2")],
       hair="hair_3__Object_1", hair_color="black"),
 
     S("teacher_woman", "girl", top="sweater", top_color=PLUM, sleeve="long",
@@ -252,8 +254,8 @@ GIRLS = [
       head=("headscarf", dict(color=TEAL, trim=GOLD))),
 
     S("dancer", "girl", top="dress", top_color=BLUSH, sleeve="cap",
-      dress_length="mini", flare=1.95, shoe="shoe", shoe_color=BLUSH,
-      extras=[("socks", BLUSH)], hair="hair_3__Object_1", hair_color="light_brown"),
+      dress_length="short", flare=1.72, shoe="shoe", shoe_color=BLUSH,
+      hair="hair_3__Object_1", hair_color="light_brown"),
 
     S("artist", "girl", top="tee", top_color=WHITE, sleeve="short",
       bottom="jeans", bottom_color=DENIM, bottom_finish="denim",

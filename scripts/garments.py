@@ -102,10 +102,15 @@ def jacket(color, shirt_color, open_front=True, length=0.0, finish=CLOTH):
 
 def hood(color, finish=CLOTH):
     hx, hy, hz = R.HEAD["center"]
-    return [rbox((hx, hy + 0.02, hz + 0.60), (1.44, 1.22, 0.70),
-                 color, radius=0.20, finish=finish, name="hood"),
-            rbox((TX, SHOULDER - 0.02, TZ + 0.30), (1.52, 0.34, 0.60),
-                 color, radius=0.12, finish=finish, name="hood_base")]
+    hw, hd = R.HEAD["size"][0], R.HEAD["size"][2]
+    return [rbox((hx, hy + 0.06, hz + 0.46), (hw + 0.34, 1.30, hd + 0.24),
+                 color, radius=0.26, finish=finish, name="hood"),
+            rbox((hx - (hw / 2 + 0.12), hy + 0.02, hz + 0.10), (0.22, 1.16, hd + 0.20),
+                 color, radius=0.11, finish=finish, name="hood_side_l"),
+            rbox((hx + (hw / 2 + 0.12), hy + 0.02, hz + 0.10), (0.22, 1.16, hd + 0.20),
+                 color, radius=0.11, finish=finish, name="hood_side_r"),
+            rbox((TX, SHOULDER - 0.03, TZ + 0.26), (TW - 0.20, 0.32, TD + 0.36),
+                 color, radius=0.13, finish=finish, name="hood_base")]
 
 
 def zipper(color=(0.78, 0.79, 0.82), y_lo=2.05, y_hi=3.90, finish=METAL):
@@ -261,10 +266,11 @@ def police_cap(color="#1B2740", band="#0C1120", peak="#0A0E18", emblem=(0.86, 0.
 
 
 def chef_hat(color="#F4F5F7"):
-    out = [cyl((HX, HTOP - 0.02, HZ), HW * 0.56, 0.46, color, axis="y", name="chef_band")]
-    for i, (dx, dz, rr) in enumerate([(0, 0, 0.46), (-0.27, 0.09, 0.33), (0.27, 0.09, 0.33),
-                                      (0, -0.27, 0.31), (0, 0.29, 0.30)]):
-        out.append(sphere((HX + dx, HTOP + 0.44, HZ + dz), rr, color, name=f"chef_puff{i}"))
+    band = "#DDE0E5" if color == "#F4F5F7" else color
+    out = [cyl((HX, HTOP - 0.16, HZ), HW * 0.60, 0.46, band, axis="y", name="chef_band")]
+    for i, (dx, dz, rr) in enumerate([(0, 0, 0.40), (-0.23, 0.08, 0.29), (0.23, 0.08, 0.29),
+                                      (0, -0.23, 0.27), (0, 0.25, 0.26)]):
+        out.append(sphere((HX + dx, HTOP + 0.20, HZ + dz), rr, color, name=f"chef_puff{i}"))
     return out
 
 
@@ -338,3 +344,17 @@ def visor_cap(color="#243046", peak=None):
         rbox((HX, HTOP + 0.11, HZ + 0.02), (0.09, 0.09, 0.09), peak,
              radius=0.035, name="cap_button"),
     ]
+
+
+def hivis_bands(color="#D9C24A", y_list=(2.55, 3.05), finish=GLOSS, pad=P_OUTER):
+    """Reflective bands around the torso and sleeves."""
+    out = []
+    for y in y_list:
+        out.append(rbox((TX, y, TZ), (TW + 2 * pad + 0.012, 0.13, TD + 2 * pad + 0.012),
+                        color, radius=0.035, finish=finish, name="hivis"))
+        for a in ARMS:
+            ax, _, az = a["center"]
+            aw, _, ad = a["size"]
+            out.append(rbox((ax, y, az), (aw + 2 * pad + 0.012, 0.13, ad + 2 * pad + 0.012),
+                            color, radius=0.035, finish=finish, name="hivis_sleeve"))
+    return out
