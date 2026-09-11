@@ -5,7 +5,7 @@ No textures anywhere — solid colour plus PBR roughness does the work.
 """
 import numpy as np
 import rig as R
-from geom import (rbox, cyl, sphere, ellipsoid, rotate, taper,
+from geom import (rbox, cyl, sphere, ellipsoid, rotate, taper, shade,
                   CLOTH, DENIM, LEATHER, METAL, GLOSS, RUBBER)
 
 TX, TY, TZ = R.TORSO["center"]
@@ -357,4 +357,29 @@ def hivis_bands(color="#D9C24A", y_list=(2.55, 3.05), finish=GLOSS, pad=P_OUTER)
             aw, _, ad = a["size"]
             out.append(rbox((ax, y, az), (aw + 2 * pad + 0.012, 0.13, ad + 2 * pad + 0.012),
                             color, radius=0.035, finish=finish, name="hivis_sleeve"))
+    return out
+
+
+def ribbing(color, neck=True, hem=None, sleeve_hem=None, factor=0.86):
+    """Knitted neckline / hem / cuff bands in a slightly deeper tone of the garment.
+
+    Without these a flat-coloured top reads as a bare box rather than a shirt.
+    """
+    c = shade(color, factor)
+    out = []
+    if neck:
+        out.append(rbox((TX, SHOULDER - 0.055, TZ),
+                        (TW + 2 * P_SHIRT + 0.02, 0.13, TD + 2 * P_SHIRT + 0.02),
+                        c, radius=0.045, name="neck_rib"))
+    if hem is not None:
+        out.append(rbox((TX, hem, TZ),
+                        (TW + 2 * P_SHIRT + 0.02, 0.11, TD + 2 * P_SHIRT + 0.02),
+                        c, radius=0.04, name="hem"))
+    if sleeve_hem is not None:
+        for a in ARMS:
+            ax, _, az = a["center"]
+            aw, _, ad = a["size"]
+            out.append(rbox((ax, sleeve_hem, az),
+                            (aw + 2 * P_SHIRT + 0.02, 0.11, ad + 2 * P_SHIRT + 0.02),
+                            c, radius=0.04, name="sleeve_hem"))
     return out

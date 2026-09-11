@@ -48,8 +48,15 @@ def _top(s):
             out += G.placket(s.get("placket_color", c))
             out += G.buttons(s.get("button_color", (0.9, 0.9, 0.92)))
         if kind == "sweater":
-            out += G.collar(c, "band")
-            out += G.cuffs(c)
+            out += G.ribbing(c, hem=G.WAIST + 0.06,
+                             sleeve_hem={"long": 2.10, "three_quarter": 2.61,
+                                         "short": 3.28, "cap": 3.68}[sleeve])
+        elif kind in ("tee", "tank"):
+            hem = None if s.get("top") == "dress" else G.WAIST + 0.06
+            out += G.ribbing(c, hem=hem,
+                             sleeve_hem={"long": 2.10, "three_quarter": 2.61,
+                                         "short": 3.28, "cap": 3.68}[
+                                 "cap" if kind == "tank" else sleeve])
         return out
 
     if kind == "hoodie":

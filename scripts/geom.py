@@ -29,6 +29,11 @@ def hexc(h):
     return tuple(_srgb_to_linear(v) for v in hexs(h))
 
 
+def shade(color, factor=0.84):
+    """Darken (or lighten, factor > 1) a colour in sRGB for ribbing and hems."""
+    return tuple(min(1.0, v * factor) for v in hexs(color))
+
+
 def pbr(color, finish=CLOTH, alpha=1.0, name="mat"):
     r, g, b = hexc(color)
     return PBRMaterial(
