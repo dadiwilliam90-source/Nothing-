@@ -1,0 +1,78 @@
+<meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#f2f4f7;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const P = new URLSearchParams(location.search);
+const ITEMS = JSON.parse(decodeURIComponent(P.get('items')));
+const COLS = +(P.get('cols') || 8);
+const CELL = +(P.get('cell') || 230);
+const ROWS = Math.ceil(ITEMS.length / COLS);
+const ANGLE = +(P.get('angle') || 0.78);   // fraction of PI
+const FOCUS = P.get('focus') || '';        // 'head' frames the skull instead of the whole model
+
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(1.6);
+renderer.setSize(COLS * CELL, ROWS * CELL);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf2f4f7);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xc2c8d4, 1.15));
+const k = new THREE.DirectionalLight(0xffffff, 1.45); k.position.set(3, 5, 5); scene.add(k);
+const f = new THREE.DirectionalLight(0xffffff, 0.5); f.position.set(-4, 2, -4); scene.add(f);
+
+const loader = new GLTFLoader();
+let done = 0;
+const cells = [];
+
+ITEMS.forEach((src, idx) => {
+  loader.load(src, (g) => {
+    const o = g.scene;
+    o.traverse(m => { if (m.isMesh) { const a = Array.isArray(m.material) ? m.material : [m.material];
+      a.forEach(x => { if (x) x.side = THREE.DoubleSide; }); } });
+    const grp = new THREE.Group(); grp.add(o);
+    const b = new THREE.Box3().setFromObject(o);
+    const c = b.getCenter(new THREE.Vector3());
+    const s = b.getSize(new THREE.Vector3());
+    let k2;
+    if (FOCUS === 'head') {
+      // Stand the figure on y=0, then frame a fixed window around the skull so
+      // tall headwear never shifts the crop between cells.
+      o.position.set(-c.x, -b.min.y, -c.z);
+      o.position.y -= 4.72;
+      k2 = 1 / 1.45;
+    } else {
+      o.position.sub(c);
+      k2 = 1 / Math.max(s.x, s.y, s.z, 1e-6);
+    }
+    grp.scale.setScalar(k2);
+    cells[idx] = grp;
+    scene.add(grp); grp.visible = false;
+    if (++done === ITEMS.length) draw();
+  }, undefined, () => { cells[idx] = null; if (++done === ITEMS.length) draw(); });
+});
+
+function draw() {
+  const a = Math.PI * ANGLE;
+  const cam = new THREE.OrthographicCamera(-0.78, 0.78, 0.78, -0.78, 0.01, 100);
+  cam.position.set(Math.sin(a) * 5, 0.62, Math.cos(a) * 5);
+  cam.lookAt(0, 0, 0);
+  ITEMS.forEach((_, i) => {
+    const col = i % COLS, row = Math.floor(i / COLS);
+    renderer.setViewport(col * CELL, (ROWS - 1 - row) * CELL, CELL, CELL);
+    renderer.setScissor(col * CELL, (ROWS - 1 - row) * CELL, CELL, CELL);
+    renderer.setScissorTest(true);
+    cells.forEach(c => { if (c) c.visible = false; });
+    if (cells[i]) cells[i].visible = true;
+    renderer.render(scene, cam);
+  });
+  window.__READY__ = true;
+}
+</script>

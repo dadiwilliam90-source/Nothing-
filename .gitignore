@@ -1,0 +1,12 @@
+# Intermediate unpacking of the supplied archives — regenerate with
+# scripts/catalog_accessories.py from assets/raw + the original zips.
+assets/extracted/
+
+# Scratch test renders; the curated sheets in preview/ are committed.
+preview/hairtest/
+preview/hattest/
+preview/test/
+preview/*.raw.png
+
+__pycache__/
+*.pyc
