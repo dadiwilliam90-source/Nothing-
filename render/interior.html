@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#111;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const P = new URLSearchParams(location.search);
+const W = +(P.get('w') || 1000), H = +(P.get('h') || 600);
+const num = (k, d) => { const v = P.get(k); return v === null ? d : +v; };
+const pos = (P.get('pos') || '0,1.6,4').split(',').map(Number);
+const tgt = (P.get('tgt') || '0,1.5,30').split(',').map(Number);
+const FOV = num('fov', 55);
+const EXPO = num('expo', 1.0);
+const AMB = num('amb', 0.06);
+const HEMI = num('hemi', 0.07);
+const SUN = num('sun', 0.35);
+
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = EXPO;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xc9ced2);
+
+// Synthesised interior environment for image-based lighting. Without one,
+// every metallic surface (lift doors, chrome, polished floor) renders black,
+// because a metal with nothing to reflect reflects nothing.
+function buildEnv(renderer) {
+  const s = new THREE.Scene();
+  const g = new THREE.BoxGeometry();
+  const mk = (hex, i) => new THREE.MeshStandardMaterial(
+      {color: hex, emissive: hex, emissiveIntensity: i, side: THREE.BackSide});
+  const add = (hex, i, sc, pos) => {
+    const m = new THREE.Mesh(g, mk(hex, i));
+    m.scale.set(sc[0], sc[1], sc[2]); m.position.set(pos[0], pos[1], pos[2]);
+    s.add(m); return m;
+  };
+  add(0xd9d5cf, 0.30, [26, 8, 64], [0, 2.4, 0]);        // room shell
+  add(0xfff6e8, 0.62, [22, 0.1, 56], [0, 5.9, 0]);       // luminous ceiling
+  add(0xeaf2f8, 3.20, [20, 6.5, 0.1], [0, 2.6, 30]);     // glazed end
+  add(0xd8c39c, 0.55, [0.1, 6, 56], [-11, 2.2, 0]);      // warm wood walls
+  add(0xd8c39c, 0.55, [0.1, 6, 56], [11, 2.2, 0]);
+  add(0xcfcdc8, 0.30, [22, 0.1, 56], [0, -1.2, 0]);      // floor bounce
+  for (const z of [-16, -6, 6, 16]) {                     // ceiling light lines
+    add(0xfff4de, 4.5, [0.5, 0.1, 9], [-3.2, 5.6, z]);
+    add(0xfff4de, 4.5, [0.5, 0.1, 9], [3.2, 5.6, z]);
+  }
+  const pm = new THREE.PMREMGenerator(renderer);
+  pm.compileEquirectangularShader();
+  const rt = pm.fromScene(s, 0.035);
+  pm.dispose();
+  return rt.texture;
+}
+scene.environment = buildEnv(renderer);
+scene.environmentIntensity = num('env', 0.25);
+
+// Interior fill. The GLB carries its own KHR_lights_punctual fixtures; these
+// only supply the bounce an unbaked real-time render cannot compute.
+scene.add(new THREE.AmbientLight(0xffffff, AMB));
+scene.add(new THREE.HemisphereLight(0xffffff, 0xbfb8ac, HEMI));
+
+const cam = new THREE.PerspectiveCamera(FOV, W / H, 0.05, 400);
+cam.position.set(pos[0], pos[1], pos[2]);
+cam.lookAt(new THREE.Vector3(tgt[0], tgt[1], tgt[2]));
+
+const loader = new GLTFLoader();
+loader.load(P.get('src'), (gltf) => {
+  const obj = gltf.scene;
+  let lightCount = 0;
+  const LINT = num('lint', 1.0);     // scales the GLB's own fixtures, for tuning
+  obj.traverse(o => {
+    if (o.isLight) { lightCount++; o.intensity *= LINT; }
+    if (o.isMesh) {
+      o.castShadow = true; o.receiveShadow = true;
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      mats.forEach(m => {
+        if (!m) return;
+        m.side = THREE.DoubleSide;         // interiors are viewed from inside
+        m.shadowSide = THREE.FrontSide;
+        if (m.map) m.map.anisotropy = 8;
+        // Emissive fixtures and screens should glow, not just be bright.
+        if (m.emissive && m.emissive.getHex() !== 0)
+          m.emissiveIntensity = num('emi', 1.0);
+      });
+    }
+  });
+  scene.add(obj);
+
+  // Daylight through the glazed end, aimed down the corridor.
+  const sun = new THREE.DirectionalLight(0xf2f6fa, SUN);
+  sun.position.set(2, 9, 46); sun.target.position.set(0, 0, 14);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.near = 1; sun.shadow.camera.far = 90;
+  sun.shadow.camera.left = -14; sun.shadow.camera.right = 14;
+  sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -4;
+  sun.shadow.bias = -0.0009;
+  scene.add(sun); scene.add(sun.target);
+
+  window.__LIGHTS__ = lightCount;
+  renderer.render(scene, cam);
+  window.__READY__ = true;
+}, undefined, (e) => { window.__ERROR__ = String(e); window.__READY__ = true; });
+</script>

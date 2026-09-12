@@ -10,3 +10,8 @@ preview/*.raw.png
 
 __pycache__/
 *.pyc
+
+# Hospital model build scratch
+hospital/__pycache__/
+preview/tune/
+preview/uvtest/

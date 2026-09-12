@@ -113,3 +113,11 @@ preview/           contact sheets from the review passes
 `assets/raw/base_rig.glb` is "Robox Rig" by
 [thomaslfraser2018](https://sketchfab.com/thomaslfraser2018), CC-BY-4.0.
 The other supplied packs carry their own licences in `assets/extracted/`.
+
+---
+
+# Also in this repo: hospital 2F elevator hall
+
+`output/hospital_corridor.glb` is an unrelated second model — a hospital
+circulation floor rebuilt from five supplied interior renders. Build it with
+`python3 hospital/build.py`. See [hospital/README.md](hospital/README.md).
