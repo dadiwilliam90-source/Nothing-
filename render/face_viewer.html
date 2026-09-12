@@ -1,0 +1,123 @@
+<meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#eceff3;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const P = new URLSearchParams(location.search);
+const W = +(P.get('w') || 420), H = +(P.get('h') || 480);
+const VIEWS = (P.get('views') || 'front').split(',');
+const FACES = (P.get('faces') || '').split(',').filter(Boolean);
+const FULL = P.get('full') === '1';
+const RIGONLY = P.get('rigonly') === '1';
+
+// The white rig is byte-identical in every avatar, so the head sits at a
+// fixed spot in model space (assets/rig_anchors.json -> "Head").
+const HEAD = new THREE.Vector3(-5.389935, 4.5, -9.765560);
+const HEAD_W = 1.197850, HEAD_H = 1.202420, HEAD_D = 1.024080;
+
+const cells = Math.max(1, FACES.length) * VIEWS.length;
+const renderer = new THREE.WebGLRenderer({antialias: true, preserveDrawingBuffer: true});
+renderer.setPixelRatio(2);
+renderer.setSize(W * cells, H);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xeceff3);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb9c0cc, 1.05));
+const key = new THREE.DirectionalLight(0xffffff, 1.5);
+key.position.set(3, 6, 5); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0012; scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.42); fill.position.set(-5, 3, 4); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 0.5); rim.position.set(0, 4, -7); scene.add(rim);
+
+// A flat quad floats off a rounded head, so bow the decal back at its edges.
+function faceQuad(tex) {
+  const s = HEAD_W * 0.88;
+  const g = new THREE.PlaneGeometry(s, s, 32, 32);
+  const pos = g.attributes.position, half = s / 2;
+  for (let i = 0; i < pos.count; i++) {
+    const u = Math.abs(pos.getX(i)) / half, v = Math.abs(pos.getY(i)) / half;
+    pos.setZ(i, -0.150 * (Math.pow(u, 7) + Math.pow(v, 7)));
+  }
+  g.computeVertexNormals();
+  const q = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
+    map: tex, transparent: true, alphaTest: 0.03, roughness: 0.85, metalness: 0,
+    polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4, depthWrite: false}));
+  q.position.set(HEAD.x, HEAD.y - HEAD_H * 0.035, HEAD.z + HEAD_D / 2 + 0.010);
+  return q;
+}
+
+// ImageBitmap ignores texture.flipY, so flip at decode time and say so.
+const texture = (url) => fetch(url).then(r => r.blob())
+  .then(b => createImageBitmap(b, {imageOrientation: 'flipY'})).then(bmp => {
+  const t = new THREE.Texture(bmp);
+  t.flipY = false;
+  t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; t.needsUpdate = true;
+  return t;
+});
+
+const ANG = {front: 0, threequarter: Math.PI * 0.22, side: Math.PI / 2,
+             threequarter_l: -Math.PI * 0.22, back: Math.PI};
+
+new GLTFLoader().load(P.get('src'), async (gltf) => {
+  try {
+    const obj = gltf.scene;
+    obj.traverse(o => {
+      if (o.isMesh) {
+        o.castShadow = true; o.receiveShadow = true;
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        mats.forEach(m => { if (m) { m.side = THREE.DoubleSide; m.shadowSide = THREE.FrontSide; } });
+      }
+    });
+    if (RIGONLY) {
+      // Node 0 is the untouched white rig; drop the clothing and accessories.
+      [...obj.children].forEach((c, i) => { if (i > 0) obj.remove(c); });
+    }
+    scene.add(obj);
+    obj.updateMatrixWorld(true);
+
+    const bb = new THREE.Box3().setFromObject(obj);
+    let target, radius;
+    if (FULL) {
+      const ground = new THREE.Mesh(
+        new THREE.CircleGeometry(3, 64), new THREE.ShadowMaterial({opacity: 0.19}));
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.set(HEAD.x, bb.min.y + 0.002, HEAD.z);
+      ground.receiveShadow = true; scene.add(ground);
+      target = new THREE.Vector3(HEAD.x, bb.min.y + (bb.max.y - bb.min.y) * 0.52, HEAD.z);
+      radius = (bb.max.y - bb.min.y) * 0.60;
+    } else {
+      target = HEAD.clone().add(new THREE.Vector3(0, HEAD_H * 0.10, 0));
+      radius = HEAD_H * 0.72;
+    }
+
+    const quads = await Promise.all(FACES.map(async f => faceQuad(await texture(f))));
+    const aspect = W / H;
+    let cell = 0;
+    for (let fi = 0; fi < Math.max(1, quads.length); fi++) {
+      quads.forEach((q, i) => { if (i === fi) obj.add(q); else obj.remove(q); });
+      for (const v of VIEWS) {
+        const a = ANG[v] !== undefined ? ANG[v] : 0;
+        const cam = new THREE.OrthographicCamera(
+          -radius * aspect, radius * aspect, radius, -radius, 0.01, 200);
+        cam.position.set(target.x + Math.sin(a) * 20, target.y, target.z + Math.cos(a) * 20);
+        cam.lookAt(target);
+        renderer.setViewport(cell * W, 0, W, H);
+        renderer.setScissor(cell * W, 0, W, H);
+        renderer.setScissorTest(true);
+        renderer.render(scene, cam);
+        cell++;
+      }
+    }
+    window.__READY__ = true;
+  } catch (e) { window.__ERROR__ = String(e && e.stack || e); window.__READY__ = true; }
+}, undefined, (e) => { window.__ERROR__ = String(e); window.__READY__ = true; });
+</script>
