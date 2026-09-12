@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 540" width="400" height="540">
+<title>Pip</title>
+<defs>
+  <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7FD8FB"/><stop offset="1" stop-color="#31A6DF"/>
+  </linearGradient>
+</defs>
+<style>
+  /* One 2s master loop. Every animation shares that duration and carries no
+     delay of its own, so a single negative animation-delay freezes the whole
+     character on any frame — that is how the GIF frames are captured. */
+  .an{animation-duration:2s;animation-iteration-count:infinite;
+      animation-timing-function:ease-in-out;transform-box:fill-box}
+  .bob{animation-name:bob;transform-origin:50% 100%}
+  .head{animation-name:head;transform-origin:50% 100%}
+  .armL{animation-name:armL;transform-origin:60% 6%}
+  .armR{animation-name:armR;transform-origin:40% 6%}
+  .eyes{animation-name:blink;transform-origin:50% 50%;animation-timing-function:linear}
+  .shadow{animation-name:shadow;transform-origin:50% 50%}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes head{0%,100%{transform:translateY(0) rotate(-2deg)}
+                  50%{transform:translateY(-4px) rotate(2deg)}}
+  @keyframes armL{0%,100%{transform:rotate(4deg)}50%{transform:rotate(-5deg)}}
+  @keyframes armR{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
+  @keyframes shadow{0%,100%{transform:scale(1);opacity:.14}50%{transform:scale(.86);opacity:.09}}
+  @keyframes blink{0%,72%{transform:scaleY(1)}75%{transform:scaleY(.05)}
+                   78%{transform:scaleY(1)}100%{transform:scaleY(1)}}
+</style>
+
+<ellipse class="an shadow" cx="200" cy="500" rx="88" ry="14" fill="#141414" opacity=".14"/>
+
+<g class="an bob">
+  <!-- limbs are drawn as two stacked strokes: a fat black one, then a thinner
+       coloured one on top. That gives a clean outlined noodle in one path. -->
+  <g class="an armL">
+    <path d="M156,200 C128,214 116,254 120,300 C122,318 124,330 128,340"
+          stroke="#141414" stroke-width="42" fill="none" stroke-linecap="round"/>
+    <path d="M156,200 C128,214 116,254 120,300 C122,318 124,330 128,340"
+          stroke="url(#suit)" stroke-width="26" fill="none" stroke-linecap="round"/>
+    <circle cx="128" cy="352" r="21" fill="#F2C9A2" stroke="#141414" stroke-width="8"/>
+  </g>
+  <g class="an armR">
+    <path d="M244,200 C272,214 284,254 280,300 C278,318 276,330 272,340"
+          stroke="#141414" stroke-width="42" fill="none" stroke-linecap="round"/>
+    <path d="M244,200 C272,214 284,254 280,300 C278,318 276,330 272,340"
+          stroke="url(#suit)" stroke-width="26" fill="none" stroke-linecap="round"/>
+    <circle cx="272" cy="352" r="21" fill="#F2C9A2" stroke="#141414" stroke-width="8"/>
+  </g>
+
+  <path d="M172,296 C166,358 164,410 168,452" stroke="#141414" stroke-width="52"
+        fill="none" stroke-linecap="round"/>
+  <path d="M228,296 C234,358 236,410 232,452" stroke="#141414" stroke-width="52"
+        fill="none" stroke-linecap="round"/>
+  <path d="M172,296 C166,358 164,410 168,452" stroke="url(#suit)" stroke-width="36"
+        fill="none" stroke-linecap="round"/>
+  <path d="M228,296 C234,358 236,410 232,452" stroke="url(#suit)" stroke-width="36"
+        fill="none" stroke-linecap="round"/>
+
+  <rect x="124" y="446" width="72" height="36" rx="18" fill="#FFFFFF"
+        stroke="#141414" stroke-width="8"/>
+  <rect x="204" y="446" width="72" height="36" rx="18" fill="#FFFFFF"
+        stroke="#141414" stroke-width="8"/>
+
+  <path d="M152,192 C152,173 172,163 200,163 C228,163 248,173 248,192
+           L251,296 C251,321 228,334 200,334 C172,334 149,321 149,296 Z"
+        fill="url(#suit)" stroke="#141414" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M206,212 L184,252 L198,252 L192,286 L218,242 L204,242 Z"
+        fill="#FFFFFF" stroke="#141414" stroke-width="6" stroke-linejoin="round"/>
+
+  <g class="an head">
+    <rect x="148" y="50" width="104" height="114" rx="18" fill="#F2C9A2"
+          stroke="#141414" stroke-width="8"/>
+    <path d="M148,90 L148,68 C148,57 160,50 176,50 L224,50 C240,50 252,57 252,68
+             L252,94 C246,74 236,64 226,69 C217,74 213,90 202,87
+             C192,84 188,66 175,71 C163,76 153,82 148,90 Z"
+          fill="#2A211D" stroke="#141414" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M216,54 C222,34 240,28 250,38 C238,38 228,46 224,60 Z"
+          fill="#2A211D" stroke="#141414" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M164,104 C171,97 185,97 192,102" stroke="#141414" stroke-width="7"
+          fill="none" stroke-linecap="round"/>
+    <path d="M208,102 C215,97 229,97 236,104" stroke="#141414" stroke-width="7"
+          fill="none" stroke-linecap="round"/>
+    <g class="an eyes">
+      <ellipse cx="178" cy="122" rx="10" ry="12.5" fill="#141414"/>
+      <ellipse cx="222" cy="122" rx="10" ry="12.5" fill="#141414"/>
+    </g>
+    <path d="M178,138 C186,160 214,160 222,138 Z" fill="#141414"
+          stroke="#141414" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M180,140 C190,145 210,145 220,140 L218,148 C209,152 191,152 182,148 Z"
+          fill="#FFFFFF"/>
+  </g>
+</g>
+</svg>
