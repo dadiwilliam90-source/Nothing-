@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Scratch Manic - decal only, transparent</title>
+  <defs>
+    <filter id="rough" filterUnits="userSpaceOnUse" x="-60" y="-60" width="640" height="640">
+      <feTurbulence type="fractalNoise" baseFrequency="0.026" numOctaves="4" seed="13" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="rough2" filterUnits="userSpaceOnUse" x="-60" y="-60" width="640" height="640">
+      <feTurbulence type="fractalNoise" baseFrequency="0.041" numOctaves="3" seed="47" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="scribble" filterUnits="userSpaceOnUse" x="-60" y="-60" width="640" height="640">
+      <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="3" seed="91" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="headrough" filterUnits="userSpaceOnUse" x="-60" y="-60" width="640" height="640">
+      <feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="3" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- impact / panic streaks flying off the head -->
+  <g filter="url(#rough2)" stroke="#16130f" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M44,86 L6,54"/><path d="M32,140 L-2,128"/>
+    <path d="M468,72 L502,40"/><path d="M480,132 L512,120"/>
+    <path d="M150,32 L134,2"/>
+  </g>
+
+  <g filter="url(#rough)">
+    <!-- BROWS : one launched off the skull, one slammed down -->
+    <g stroke="#16130f" fill="none" stroke-linecap="round">
+      <path d="M92,124 C126,60 210,50 258,94" stroke-width="15"/>
+      <path d="M98,132 C132,72 212,60 254,102" stroke-width="4" opacity="0.75"/>
+      <path d="M298,104 C342,112 388,136 416,168" stroke-width="15"/>
+      <path d="M302,114 C346,122 386,144 410,174" stroke-width="4" opacity="0.75"/>
+    </g>
+
+    <!-- LEFT EYE : bulging out of the head -->
+    <ellipse cx="176" cy="210" rx="66" ry="76" fill="#f6f4ef" stroke="#16130f" stroke-width="11"/>
+    <ellipse cx="179" cy="213" rx="70" ry="80" fill="none" stroke="#16130f" stroke-width="3" opacity="0.7"/>
+    <circle cx="201" cy="238" r="19" fill="#16130f"/>
+    <g stroke="#16130f" stroke-width="3" stroke-linecap="round" opacity="0.55">
+      <path d="M132,176 L154,192"/><path d="M128,214 L150,216"/><path d="M214,166 L200,184"/>
+    </g>
+
+    <!-- RIGHT EYE : squeezed to a pinhole -->
+    <ellipse cx="352" cy="198" rx="30" ry="38" fill="#f6f4ef" stroke="#16130f" stroke-width="10"/>
+    <circle cx="345" cy="207" r="12" fill="#16130f"/>
+    <g stroke="#16130f" stroke-width="5" stroke-linecap="round">
+      <path d="M310,158 L296,142"/><path d="M394,160 L410,144"/>
+      <path d="M300,198 L280,196"/><path d="M404,200 L424,198"/>
+      <path d="M330,248 L326,272"/><path d="M356,250 L356,276"/><path d="M380,246 L388,270"/>
+    </g>
+
+    <g transform="translate(2,-18)">
+    <!-- MOUTH : crooked, torn wide open, mid-screech -->
+    <path d="M104,318 C146,284 240,270 336,282 C400,290 428,306 414,344
+             C404,410 334,462 242,456 C150,450 96,388 104,318 Z"
+          fill="#4b0f22" stroke="#16130f" stroke-width="13"/>
+    <!-- uneven top fangs -->
+    <path d="M112,318 L136,364 L160,314 L190,360 L220,302 L254,352 L288,298 L322,344 L352,294 L384,332 L410,306
+             L406,290 C342,272 196,280 108,306 Z"
+          fill="#f0ece2" stroke="#16130f" stroke-width="6" stroke-linejoin="round"/>
+    <!-- bottom fangs, rooted in the lower lip -->
+    <path d="M228,454 L260,398 L294,452 Z" fill="#f0ece2" stroke="#16130f" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M318,446 L342,394 L370,424 Z" fill="#f0ece2" stroke="#16130f" stroke-width="6" stroke-linejoin="round"/>
+    <!-- tongue slung out over the bottom lip -->
+    <path d="M186,376 C156,386 126,414 120,450 C114,484 158,498 190,480
+             C226,469 246,422 236,384 Z"
+          fill="#d8788c" stroke="#16130f" stroke-width="9"/>
+    <path d="M198,398 C176,422 162,450 166,478" fill="none" stroke="#16130f" stroke-width="4" opacity="0.7"/>
+    </g>
+  </g>
+
+  <!-- scribbled blush + stray scratches : the "not perfect" pass -->
+  <g filter="url(#scribble)" stroke-linecap="round" fill="none">
+    <g stroke="#c96070" stroke-width="7" opacity="0.9">
+      <path d="M62,268 L104,254"/><path d="M66,286 L110,270"/><path d="M72,304 L112,288"/>
+      <path d="M414,286 L452,272"/><path d="M418,304 L456,290"/><path d="M424,322 L454,310"/>
+    </g>
+    <g stroke="#16130f" stroke-width="5" opacity="0.85">
+      <path d="M432,214 L464,240"/><path d="M418,232 L452,258"/>
+      <path d="M56,178 L84,150"/>
+    </g>
+    <g stroke="#16130f" stroke-width="3" opacity="0.28">
+      <path d="M240,150 L346,120"/><path d="M84,392 L142,436"/><path d="M370,392 L432,362"/>
+    </g>
+  </g>
+
+  <!-- over-acting kit : anger vein, flying sweat, spit -->
+  <g filter="url(#rough2)" stroke="#16130f" fill="none" stroke-linecap="round">
+    <g stroke-width="7">
+      <path d="M286,44 L282,92"/><path d="M312,40 L306,88"/>
+      <path d="M272,58 L322,54"/><path d="M276,78 L326,74"/>
+    </g>
+  </g>
+  <g filter="url(#rough2)">
+    <path d="M444,54 C462,88 474,106 470,124 C466,146 436,152 424,134 C412,116 424,88 444,54 Z"
+          fill="#dff0f6" stroke="#16130f" stroke-width="7"/>
+  </g>
+  <g filter="url(#scribble)" stroke="#16130f" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M424,392 L444,404"/><path d="M446,428 L462,442"/><path d="M404,438 L416,456"/>
+    <path d="M66,352 L46,364"/><path d="M56,398 L38,412"/>
+  </g>
+</svg>
