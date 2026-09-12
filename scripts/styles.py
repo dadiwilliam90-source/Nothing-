@@ -77,13 +77,13 @@ BOYS = [
     S("delivery_driver", "boy", top="polo", top_color=BROWN, sleeve="short",
       collar_color=TAN, bottom="trousers", bottom_color=BROWN,
       shoe="boot", shoe_color=INK, extras=[("belt", INK), ("pockets", TAN)],
-      hair="hair_1__Object_7", hair_color="brown", head=("baseball", dict(color=BROWN))),
+      hair="hair_1__Object_7", hair_color="brown"),
 
     S("pilot", "boy", top="uniform", top_color=WHITE, sleeve="long",
       collar_color=OFFWHITE, placket_color=OFFWHITE, button_color=GOLD,
       bottom="trousers", bottom_color=NAVY_X, shoe="shoe", shoe_color=BLACK,
       extras=[("tie", NAVY_X), ("epaulettes", NAVY_X), ("belt", BLACK)],
-      hair="hair_2__Object_4", hair_color="grey", head="police",
+      hair="hair_2__Object_4", hair_color="grey",
       glasses=dict(frame="#23262B", lens="#3E4C5E")),
 
     S("firefighter", "boy", top="jacket", top_color=CHARCOAL_D, inner_color=AMBER,
@@ -96,7 +96,7 @@ BOYS = [
       collar_color=GREY_D, placket_color=GREY_D, button_color=SILVER,
       bottom="trousers", bottom_color=STEEL, shoe="boot", shoe_color=BLACK,
       extras=[("belt", BLACK), ("pockets", GREY_D), ("badge", SILVER)],
-      hair="hair_1__Object_5", hair_color="auburn", head=("baseball", dict(color=STEEL))),
+      hair="hair_1__Object_5", hair_color="auburn"),
 
     S("graduate", "boy", top="coat", top_color=INK, inner_color=WHITE,
       collar_color=WHITE, open=False, bottom="trousers", bottom_color=CHARCOAL_D,
@@ -112,7 +112,7 @@ BOYS = [
       collar_color=RED_D, placket_color=MAROON, button_color=CREAM,
       bottom="jeans", bottom_color=DENIM_D, bottom_finish="denim",
       shoe="boot", shoe_color=BROWN, extras=[("belt", BROWN)],
-      hair="hair_2__Object_4", hair_color="light_brown", head=("baseball", dict(color=DENIM_D))),
+      hair="hair_2__Object_4", hair_color="light_brown"),
 
     S("soldier", "boy", top="uniform", top_color=OLIVE, sleeve="long",
       collar_color=OLIVE, placket_color="#4A4F31", button_color=OLIVE,
@@ -122,8 +122,7 @@ BOYS = [
 
     S("skater", "boy", top="tee", top_color=PURPLE, sleeve="short",
       bottom="shorts", bottom_color=CHARCOAL, shoe="sneaker", shoe_color=BLACK,
-      extras=[("socks", WHITE)], hair="hair_1__Object_5", hair_color="black",
-      head=("beanie", dict(color=CHARCOAL_D, cuff=PURPLE))),
+      extras=[("socks", WHITE)], hair="hair_1__Object_5", hair_color="black"),
 
     S("teacher", "boy", top="sweater", top_color=GREEN, sleeve="long",
       bottom="trousers", bottom_color=KHAKI, shoe="shoe", shoe_color=BROWN,
@@ -134,7 +133,7 @@ BOYS = [
       collar_color=BLACK, placket_color=BLACK, button_color=SILVER,
       bottom="trousers", bottom_color=INK, shoe="boot", shoe_color=BLACK,
       extras=[("belt", BLACK), ("badge", SILVER), ("epaulettes", BLACK)],
-      hair="hair_1__Object_7", hair_color="black", head=("visor", dict(color=INK))),
+      hair="hair_1__Object_7", hair_color="black"),
 
     S("scientist", "boy", top="coat", top_color=WHITE, inner_color=TEAL_L,
       collar_color=TEAL_L, bottom="trousers", bottom_color=GREY_D,
@@ -156,8 +155,7 @@ BOYS = [
     S("cricketer", "boy", top="polo", top_color=WHITE, sleeve="long",
       collar_color=OFFWHITE, bottom="trousers", bottom_color=WHITE,
       shoe="sneaker", shoe_color=WHITE, extras=[("belt", OFFWHITE)],
-      hair="hair_1__Object_6", hair_color="dark_brown",
-      head=("visor", dict(color=NAVY_D))),
+      hair="hair_1__Object_6", hair_color="dark_brown"),
 
     S("kurta_traditional", "boy", top="kurta", top_color=CREAM, sleeve="long",
       bottom="trousers", bottom_color=CREAM, shoe="shoe", shoe_color=BROWN,
@@ -168,7 +166,7 @@ BOYS = [
       collar_color=NAVY_D, bottom="shorts", bottom_color=NAVY_D,
       shoe="shoe", shoe_color=BLACK,
       extras=[("belt", BLACK), ("socks", OFFWHITE), ("pockets", NAVY_D)],
-      hair="hair_2__Object_4", hair_color="light_brown", head=("baseball", dict(color=NAVY_D))),
+      hair="hair_2__Object_4", hair_color="light_brown"),
 ]
 
 GIRLS = [
@@ -268,7 +266,7 @@ GIRLS = [
       collar_color=BLACK, placket_color=BLACK, button_color=SILVER,
       bottom="trousers", bottom_color=INK, shoe="boot", shoe_color=BLACK,
       extras=[("belt", BLACK), ("badge", SILVER), ("epaulettes", BLACK)],
-      hair="hair_1__Object_3", hair_color="black", head=("visor", dict(color=INK))),
+      hair="hair_1__Object_3", hair_color="black"),
 
     S("gym_girl", "girl", top="tank", top_color=PURPLE, bottom="capri",
       bottom_color=CHARCOAL_D, shoe="sneaker", shoe_color=LILAC,
@@ -283,8 +281,7 @@ GIRLS = [
       collar_color=GREEN, placket_color="#33583D", button_color=CREAM,
       bottom="jeans", bottom_color=DENIM_D, bottom_finish="denim",
       shoe="boot", shoe_color=BROWN, extras=[("apron", KHAKI)],
-      hair="hair_2__Object_2", hair_color="ginger",
-      head=("beanie", dict(color=KHAKI, cuff=GREEN))),
+      hair="hair_2__Object_2", hair_color="ginger"),
 
     S("librarian", "girl", top="sweater", top_color=KHAKI, sleeve="long",
       bottom="skirt_long", bottom_color=BROWN, flare=1.4,

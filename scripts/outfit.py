@@ -154,8 +154,7 @@ def build(spec):
     # A hat that encloses the skull replaces the hair rather than sitting on top
     # of it — a wig squeezed under a cap bulges out and swallows the face.
     hair = spec.get("hair")
-    covered = head_kind in COVERING_HEADWEAR or spec.get("top") == "hoodie"
-    if hair and not covered:
+    if hair and head_kind not in COVERING_HEADWEAR:
         col = HAIR_COLORS.get(spec.get("hair_color", "dark_brown"), spec.get("hair_color"))
         meshes.append(fit_hair(hair, color=col, **HAIR.get(hair, {})))
 

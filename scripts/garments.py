@@ -101,16 +101,13 @@ def jacket(color, shirt_color, open_front=True, length=0.0, finish=CLOTH):
 
 
 def hood(color, finish=CLOTH):
-    hx, hy, hz = R.HEAD["center"]
-    hw, hd = R.HEAD["size"][0], R.HEAD["size"][2]
-    return [rbox((hx, hy + 0.06, hz - 0.46), (hw + 0.34, 1.30, hd + 0.24),
-                 color, radius=0.26, finish=finish, name="hood"),
-            rbox((hx - (hw / 2 + 0.12), hy + 0.02, hz - 0.10), (0.22, 1.16, hd + 0.20),
-                 color, radius=0.11, finish=finish, name="hood_side_l"),
-            rbox((hx + (hw / 2 + 0.12), hy + 0.02, hz - 0.10), (0.22, 1.16, hd + 0.20),
-                 color, radius=0.11, finish=finish, name="hood_side_r"),
-            rbox((TX, SHOULDER - 0.03, TZ - 0.26), (TW - 0.20, 0.32, TD + 0.36),
-                 color, radius=0.13, finish=finish, name="hood_base")]
+    """Hood worn DOWN, bunched behind the neck — leaves the hair on show."""
+    return [
+        rbox((TX, SHOULDER - 0.16, BACK_Z - 0.24), (TW - 0.14, 0.78, 0.52),
+             color, radius=0.24, finish=finish, name="hood"),
+        rbox((TX, SHOULDER + 0.10, BACK_Z - 0.10), (TW - 0.02, 0.22, 0.34),
+             shade(color, 0.9), radius=0.11, finish=finish, name="hood_lip"),
+    ]
 
 
 def zipper(color=(0.78, 0.79, 0.82), y_lo=2.05, y_hi=3.90, finish=METAL):
