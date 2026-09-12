@@ -68,7 +68,6 @@ loader.load(P.get('src'), (gltf) => {
   ground.rotation.x = -Math.PI / 2; ground.position.y = 0.002; ground.receiveShadow = true;
   scene.add(ground);
 
-  // Model faces -Z, so the camera looks from -Z for a front view.
   // The model faces +Z, so the front view sits on +Z.
   const ANG = {front: 0, threequarter: Math.PI * 0.22, side: Math.PI / 2,
                back: Math.PI, threequarter_l: -Math.PI * 0.22};
