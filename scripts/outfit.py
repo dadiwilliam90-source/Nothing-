@@ -17,6 +17,10 @@ HEADWEAR = {
     "headscarf": G.headscarf,
     "visor": G.visor_cap,
 }
+# Headwear that encloses the skull; a headband does not, so hair stays with it.
+COVERING_HEADWEAR = {"police", "chef", "hardhat", "beanie", "grad", "turban",
+                     "headscarf", "visor", "baseball"}
+
 MESH_CAPS = {
     "baseball": ("cap_baseball__Object_0", {}),
     "headband": ("hat_1__Object_6", {"overlap": 0.52, "grip": 1.10}),
@@ -144,17 +148,17 @@ def build(spec):
         meshes += G.shoes(spec.get("shoe_color", "#232730"), spec["shoe"])
     meshes += _extras(spec)
 
-    hair = spec.get("hair")
-    if hair:
-        col = HAIR_COLORS.get(spec.get("hair_color", "dark_brown"), spec.get("hair_color"))
-        fit = dict(HAIR.get(hair, {}))
-        if spec.get("head"):
-            fit.setdefault("grip", 1.34)
-            fit["grip"] *= 0.88          # tuck under the hat instead of lifting it
-            fit["dy"] = fit.get("dy", 0.0) - 0.07
-        meshes.append(fit_hair(hair, color=col, **fit))
-
     head = spec.get("head")
+    head_kind = (head if isinstance(head, str) else head[0]) if head else None
+
+    # A hat that encloses the skull replaces the hair rather than sitting on top
+    # of it — a wig squeezed under a cap bulges out and swallows the face.
+    hair = spec.get("hair")
+    covered = head_kind in COVERING_HEADWEAR or spec.get("top") == "hoodie"
+    if hair and not covered:
+        col = HAIR_COLORS.get(spec.get("hair_color", "dark_brown"), spec.get("hair_color"))
+        meshes.append(fit_hair(hair, color=col, **HAIR.get(hair, {})))
+
     if head:
         kind, opts = (head, {}) if isinstance(head, str) else head
         if kind in HEADWEAR:

@@ -6,19 +6,14 @@ per-item fit corrections found by rendering the item on the actual rig head.
 
 # key -> fit overrides (yaw / scale / dy / dz / grip)
 HAIR = {
-    "hair_1__Object_1": {},
     "hair_1__Object_3": {},
     "hair_1__Object_4": {},
     "hair_1__Object_5": {},
     "hair_1__Object_6": {},
     "hair_1__Object_7": {},
-    "hair_2__Object_1": {},
     "hair_2__Object_2": {"grip": 1.58, "dy": -0.12},
     "hair_2__Object_4": {"grip": 1.46, "dy": -0.06},
-    "hair_2__Object_5": {},
     "hair_2__Object_6": {},
-    "hair_2__Object_9": {},
-    "hair_2__Object_10": {"grip": 1.52, "dy": -0.09},
     "hair_2__Object_11": {},
     "hair_3__Object_1": {},
     "hair_3__Object_3": {},
@@ -27,10 +22,9 @@ HAIR = {
 
 # Sorted by how the fitted wig actually reads on the rig, not by pack order.
 BOY_HAIR = ["hair_1__Object_4", "hair_1__Object_5", "hair_1__Object_6",
-            "hair_1__Object_7", "hair_2__Object_4", "hair_2__Object_5",
-            "hair_2__Object_9", "hair_2__Object_10"]
+            "hair_1__Object_7", "hair_2__Object_4"]
 GIRL_HAIR = ["hair_2__Object_2", "hair_2__Object_6", "hair_3__Object_1",
-             "hair_2__Object_11", "hair_2__Object_1", "hair_1__Object_1",
+             "hair_2__Object_11",
              "hair_1__Object_3", "hair_3__Object_3", "hair_3__Object_4"]
 
 HAIR_COLORS = {

@@ -10,6 +10,7 @@ LEATHER = dict(metallic=0.0, rough=0.42)
 METAL = dict(metallic=0.95, rough=0.28)
 GLOSS = dict(metallic=0.0, rough=0.22)
 RUBBER = dict(metallic=0.0, rough=0.95)
+HAIR = dict(metallic=0.0, rough=0.46)
 
 
 def _srgb_to_linear(c):

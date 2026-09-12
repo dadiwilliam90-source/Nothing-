@@ -7,11 +7,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_RIG = os.path.join(ROOT, "assets/raw/base_rig.glb")
 
 # Measured from assets/raw/base_rig.glb via scripts/analyze_rig.py.
-# Avatar faces -Z. Up is +Y. Avatar's right is +X. Feet sit on Y = 0.
+# The model faces +Z — confirmed by rendering the supplied reference avatar
+# (face, hoodie zip and logo all sit on +Z) and the supplied cap (peak and
+# logo on +Z, snapback strap on -Z). Up is +Y; the avatar's right is -X.
+# Feet sit on Y = 0.
 CX = -5.39          # body centre line in X
 CZ = -9.852         # body centre line in Z (torso/limbs)
-FRONT = -10.352     # torso front face (min Z)
-BACK = -9.352       # torso back face (max Z)
+FRONT = -9.352      # torso front face (max Z)
+BACK = -10.352      # torso back face (min Z)
 
 TORSO = dict(center=(CX, 3.0, CZ), size=(2.0, 2.0, 1.0))
 HEAD = dict(center=(CX, 4.5, -9.766), size=(1.198, 1.202, 1.024))
@@ -22,7 +25,8 @@ L_LEG = dict(center=(-5.89, 1.0, CZ), size=(1.0, 2.0, 1.0))
 
 HEAD_TOP = HEAD["center"][1] + HEAD["size"][1] / 2      # 5.101
 HEAD_BOTTOM = HEAD["center"][1] - HEAD["size"][1] / 2   # 3.899
-HEAD_FRONT = HEAD["center"][2] - HEAD["size"][2] / 2    # -10.278
+HEAD_FRONT = HEAD["center"][2] + HEAD["size"][2] / 2    # -9.254
+HEAD_BACK = HEAD["center"][2] - HEAD["size"][2] / 2     # -10.278
 HEAD_W = HEAD["size"][0]
 EYE_Y = HEAD["center"][1] + 0.12                        # eye line on the blank face
 

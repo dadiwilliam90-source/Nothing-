@@ -69,8 +69,9 @@ loader.load(P.get('src'), (gltf) => {
   scene.add(ground);
 
   // Model faces -Z, so the camera looks from -Z for a front view.
-  const ANG = {front: Math.PI, threequarter: Math.PI * 0.78, side: Math.PI / 2,
-               back: 0, threequarter_l: Math.PI * 1.22};
+  // The model faces +Z, so the front view sits on +Z.
+  const ANG = {front: 0, threequarter: Math.PI * 0.22, side: Math.PI / 2,
+               back: Math.PI, threequarter_l: -Math.PI * 0.22};
 
   let target, radius;
   if (HEADONLY) {
