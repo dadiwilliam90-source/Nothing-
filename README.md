@@ -60,9 +60,9 @@ re-anchored from its own geometry (`scripts/accessories.py`):
   past the head or towers over it. The front edge is anchored to the face, so
   hair always falls backwards instead of through it.
 - **Caps** — measured by the crown band and parked a fixed distance below the
-  top of the head, so they grip rather than hover.
-- **Caps** — the supplied cap is authored facing +Z like the rig, so it needs no
-  turn; the wig packs are authored facing -Z and each gets a half turn.
+  top of the head, so they grip rather than hover. The supplied cap is authored
+  facing +Z like the rig and needs no turn; the wig packs are authored facing -Z
+  and each gets a half turn.
 - **Glasses** — the supplied pair is modelled diagonally, so no axis test finds
   the lens direction. PCA on the lens plates gives it directly: their widest
   spread is lens-to-lens, their thinnest is the viewing normal. Seating is
