@@ -41,7 +41,12 @@ hard-codes as anchors:
 | arm   | (±1.5 from centre)     | 1.00 x 2.00 x 1.00 |
 | leg   | (±0.5 from centre)     | 1.00 x 2.00 x 1.00 |
 
-The avatar faces **-Z**, up is **+Y**, its right hand is **+X**, feet at y = 0.
+The avatar faces **+Z**, up is **+Y**, feet at y = 0.
+
+Getting that direction wrong puts every collar, tie, pocket, cap peak and shoe
+toe on the avatar's back, so it is verified rather than assumed: rendering the
+supplied reference avatar and the supplied cap from both sides shows the face,
+the hoodie zip, the cap peak and the cap logo all on +Z.
 
 ## Fitting the supplied accessories
 
@@ -56,8 +61,17 @@ re-anchored from its own geometry (`scripts/accessories.py`):
   hair always falls backwards instead of through it.
 - **Caps** — measured by the crown band and parked a fixed distance below the
   top of the head, so they grip rather than hover.
-- **Glasses** — the widest horizontal axis is detected (and rotated into place if
-  the model was authored sideways), then seated on the front face at eye level.
+- **Caps** — the supplied cap is authored facing +Z like the rig, so it needs no
+  turn; the wig packs are authored facing -Z and each gets a half turn.
+- **Glasses** — the supplied pair is modelled diagonally, so no axis test finds
+  the lens direction. PCA on the lens plates gives it directly: their widest
+  spread is lens-to-lens, their thinnest is the viewing normal. Seating is
+  measured from the lens plane, since the group's extent is dominated by the
+  temples.
+
+Headwear that encloses the skull replaces the hair rather than layering over it
+— a wig squeezed under a cap bulges out and swallows the face, which is also how
+the reference avatars wear hats.
 
 Textured accessories are re-tinted through their own luminance
 (`accessories.recolor`), so strand detail survives an arbitrary colour change
